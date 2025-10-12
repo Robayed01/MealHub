@@ -71,7 +71,7 @@ if (isset($_POST['login'])) {
       border-radius: 5px;
     }
     button {
-      width: 95%;
+      width: 95%;   
       padding: 10px;
       background: #2a65ff;
       border: none;
