@@ -6,7 +6,7 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE email = ? AND role = 'customer'";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -101,6 +101,8 @@ if (isset($_POST['login'])) {
         <button type="submit" name="login">Login Now</button>
       </form>
       <div class="footer">
+        <p>Admin? <a href="admin_login.php">Login here</a></p>
+        <p>First time setup? <a href="admin_register.php">Create Admin Account</a></p>
         <p>Don't have an account? <a href="register.php">Signup now</a></p>
       </div>
     </div>
