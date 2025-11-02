@@ -1,102 +1,75 @@
 <?php
+// admin_login.php - fixed credentials
 session_start();
-include "includes/db.php";
 
-$msg = "";
-$msg_type = "";
+// Hardcoded admin credentials (change before production)
+$admin_username = "admin";
+$admin_password = "admin123";
 
 if (isset($_POST['login'])) {
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND role = 'admin'");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['admin_id'] = $row['user_id'];
-            $_SESSION['admin_name'] = $row['name'];
-            $_SESSION['role'] = 'admin';
-            header("Location: admin/dashboard.php");
-            exit();
-        } else {
-            $msg = "Invalid password!";
-            $msg_type = "error";
-        }
+    if ($username === $admin_username && $password === $admin_password) {
+        // set admin session (simple)
+        $_SESSION['admin'] = $admin_username;
+        // redirect to admin dashboard
+        header("Location: admin/dashboard.php");
+        exit();
     } else {
-        $msg = "Admin account not found!";
-        $msg_type = "error";
+        $msg = "Invalid admin username or password.";
     }
 }
 ?>
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Login - MealHub</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #2a65ff;
-      font-family: 'Poppins', sans-serif;
-    }
-    .container {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .card {
-      background: #fff;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      width: 350px;
-      text-align: center;
-    }
-    .card h2 { margin-bottom: 20px; }
-    input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      width: 95%;
-      padding: 10px;
-      background: #2a65ff;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover { background: #1e4fd3; }
-    .msg {
-      margin-bottom: 10px;
-      color: red;
-      font-weight: 500;
-    }
-  </style>
+<meta charset="utf-8">
+<title>Admin Login - MealHub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root{--accent:#ff6b6b;--accent-dark:#e04848;--glass:#fff;}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:"Poppins",Arial,sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    background-image: url('assets/images/online-food-delivery-amazon-tw.jpg');
+    background-size:cover;background-position:center;
+    padding:20px;
+  }
+  .overlay{position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));z-index:0}
+  .card{position:relative;z-index:1;width:360px;background:rgba(255,255,255,0.94);padding:32px;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.35);text-align:center}
+  h2{margin:0 0 12px 0;color:#222}
+  p.lead{margin:0 0 18px 0;color:#333;opacity:0.9}
+  .msg{padding:10px;border-radius:8px;margin-bottom:12px;color:#ff4d4f;background:#ffecec;display:block;text-align:left}
+  .input{width:100%;padding:12px;border-radius:10px;border:1px solid #e6e6e6;margin:8px 0}
+  .input:focus{outline:none;box-shadow:0 6px 18px rgba(255,107,107,0.12);border-color:var(--accent)}
+  .btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+  .btn:hover{background:var(--accent-dark)}
+  .links{margin-top:12px;font-size:14px}
+  .links a{color:var(--accent);text-decoration:none;font-weight:600}
+  @media(max-width:420px){.card{width:100%}}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h2>Admin Login</h2>
-      <?php if ($msg): ?>
-        <div class="msg"><?php echo $msg; ?></div>
-      <?php endif; ?>
-      <form method="POST">
-        <input type="email" name="email" placeholder="Enter admin email" required><br>
-        <input type="password" name="password" placeholder="Enter password" required><br>
-        <button type="submit" name="login">Login Now</button>
-      </form>
+  <div class="overlay" aria-hidden="true"></div>
+
+  <div class="card" role="main">
+    <h2>Admin Login</h2>
+    <p class="lead">Enter admin credentials</p>
+
+    <?php if (!empty($msg)): ?>
+      <div class="msg"><?php echo htmlspecialchars($msg); ?></div>
+    <?php endif; ?>
+
+    <form method="post" novalidate>
+      <input class="input" type="text" name="username" placeholder="Admin username" required>
+      <input class="input" type="password" name="password" placeholder="Password" required>
+      <button class="btn" type="submit" name="login">Login</button>
+    </form>
+
+    <div class="links">
+      <a href="index.php">Back to Customer Login</a>
     </div>
   </div>
 </body>
