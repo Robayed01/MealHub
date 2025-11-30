@@ -64,6 +64,8 @@ body{font-family:Inter,Arial,sans-serif;margin:0;background:#f4f6f8}
         <a href="restaurants.php">Manage Restaurants</a>
         <a href="categories.php">Manage Categories</a>
         <a href="food_items.php">Manage Food Items</a>
+        <a href="orders.php">Manage Orders</a>
+        <a href="reports.php">Reports</a>
       </div>
     </div>
 
