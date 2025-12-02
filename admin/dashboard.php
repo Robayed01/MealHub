@@ -11,11 +11,8 @@ include "../includes/db.php";
 $countRes = $conn->query("SELECT COUNT(*) AS cnt FROM restaurants");
 $restaurants_count = ($countRes->fetch_assoc()['cnt'] ?? 0);
 
-$countCat = $conn->query("SELECT COUNT(*) AS cnt FROM categories");
-$categories_count = ($countCat->fetch_assoc()['cnt'] ?? 0);
-
-$countFoods = $conn->query("SELECT COUNT(*) AS cnt FROM food_items");
-$foods_count = ($countFoods->fetch_assoc()['cnt'] ?? 0);
+$countOwners = $conn->query("SELECT COUNT(*) AS cnt FROM restaurant_owners");
+$owners_count = ($countOwners->fetch_assoc()['cnt'] ?? 0);
 
 $countOrders = $conn->query("SELECT COUNT(*) AS cnt FROM orders");
 $orders_count = ($countOrders->fetch_assoc()['cnt'] ?? 0);
@@ -53,17 +50,15 @@ body{font-family:Inter,Arial,sans-serif;margin:0;background:#f4f6f8}
   <div class="container">
     <div class="grid">
       <div class="card"><h3><?php echo (int)$restaurants_count; ?></h3><p>Restaurants</p></div>
-      <div class="card"><h3><?php echo (int)$categories_count; ?></h3><p>Categories</p></div>
-      <div class="card"><h3><?php echo (int)$foods_count; ?></h3><p>Menu Items</p></div>
-      <div class="card"><h3><?php echo (int)$orders_count; ?></h3><p>Orders</p></div>
+      <div class="card"><h3><?php echo (int)$owners_count; ?></h3><p>Restaurant Owners</p></div>
     </div>
 
     <div class="card">
       <h3>Quick Links</h3>
       <div class="links" style="margin-top:12px">
         <a href="restaurants.php">Manage Restaurants</a>
-        <a href="categories.php">Manage Categories</a>
-        <a href="food_items.php">Manage Food Items</a>
+        <a href="owners.php">Manage Restaurant Owners</a>
+        <a href="reports.php">Reports</a>
       </div>
     </div>
 

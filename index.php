@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     <div class="links">
       <div>Don't have an account? <a href="register.php">Sign up</a></div>
+      <div style="margin-top:8px"> Are you a <strong>Restaurant Owner</strong>? <a href="restaurant_owner_login.php">Login here</a>. </div> 
       <div style="margin-top:8px">Admin? <a href="admin_login.php">Login here</a></div>
     </div>
 
