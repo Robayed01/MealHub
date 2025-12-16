@@ -147,8 +147,16 @@ $owners_count = ($countOwners->fetch_assoc()['cnt'] ?? 0);
     <div>
       <h1>Welcome to Admin panel</h1>
     </div>
-  </div>
-  </div>
+
+    <div class="card">
+      <h3>Quick Links</h3>
+      <div class="links" style="margin-top:12px">
+        <a href="restaurants.php">Manage Restaurants</a>
+        <a href="categories.php">Manage Categories</a>
+        <a href="food_items.php">Manage Food Items</a>
+      </div>
+    </div>
+
   </div>
 
 </body>
