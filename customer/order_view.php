@@ -16,41 +16,90 @@ $items = $stmt->get_result();
 ?>
 <!doctype html>
 <html>
+
 <head>
-<title>Order Details</title>
-<style>
-body{font-family:Inter,Arial;background:#f4f6f8;margin:0}
-.container{max-width:800px;margin:24px auto;background:white;padding:20px;border-radius:12px;
-box-shadow:0 4px 14px rgba(0,0,0,0.1)}
-.row{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:10px 0}
-.price{font-weight:700;color:#007bff}
-</style>
+  <title>Order Details</title>
+  <style>
+    body {
+      font-family: Inter, Arial;
+      background: #C7CFB7;
+      margin: 0
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 24px auto;
+      padding: 0 20px
+    }
+
+    .card {
+      background: #F7F7E8;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1)
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0
+    }
+
+    .price {
+      font-weight: 900;
+      color: #557174
+    }
+
+    .header {
+      background: #557174;
+      color: #1F2937;
+      font-weight: bold;
+      padding: 15px;
+      font-size: 20px
+    }
+
+    .back-btn {
+      background: #557174;
+      display: inline-block;
+      padding: 10px 16px;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-bottom: 20px
+    }
+  </style>
 </head>
+
 <body>
-<div class="container">
-  <h2>Order #<?php echo $order_id; ?></h2>
+  <div class="header">Order Details</div>
+  <br>
+  <div class="container">
+    <a href=" order_history.php" class="back-btn">← Back to Order History</a>
 
-  <?php while($it = $items->fetch_assoc()): ?>
-    <div class="row">
-      <div>
-        <strong><?php echo $it['food_name']; ?></strong><br>
-        <small><?php echo $it['restaurant_name']; ?></small><br>
-        Qty: <?php echo $it['quantity']; ?>
-      </div>
-      <div class="price">
-        $<?php echo number_format($it['price']*$it['quantity'],2); ?>
-      </div>
+    <div class="card">
+      <h2>Order #
+        <?php echo $order_id; ?>
+      </h2>
+
+      <?php while ($it = $items->fetch_assoc()): ?>
+        <div class="row">
+          <div>
+            <strong><?php echo $it['food_name']; ?></strong><br>
+            <small><?php echo $it['restaurant_name']; ?></small><br>
+            Qty:
+            <?php echo $it['quantity']; ?>
+          </div>
+          <div class="price">
+            Tk
+            <?php echo number_format($it['price'] * $it['quantity'], 2); ?>
+          </div>
+        </div>
+      <?php endwhile; ?>
     </div>
-  <?php endwhile; ?>
+  </div>
 
-</div>
-<div style="text-align:center; margin-top: 25px;">
-    <a href="order_history.php" 
-       style="background:#007bff; padding:12px 20px; color:white; 
-              border-radius:8px; text-decoration:none; font-size:16px;">
-        ← Back to Order History
-    </a>
-</div>
 
 </body>
+
 </html>

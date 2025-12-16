@@ -9,7 +9,7 @@ include "../includes/db.php";
 $msg = "";
 
 // Allowed image types
-$allowed_types = ['image/jpeg','image/png','image/gif'];
+$allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
 $max_size = 2 * 1024 * 1024;
 
 // ADD / UPDATE
@@ -106,101 +106,170 @@ $list = $conn->query("SELECT * FROM restaurants ORDER BY restaurant_id DESC");
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Restaurants - Admin</title>
-<style>
-body{font-family:Poppins;margin:0;background:#f5f6fa}
-.header{background:#007bff;color:#fff;padding:15px;font-size:20px}
-.container{max-width:1100px;margin:auto;padding:20px}
-.card{background:#fff;padding:20px;border-radius:10px;margin-bottom:20px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1)}
-.input{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ccc}
-.btn{padding:10px 16px;background:#007bff;color:#fff;border:none;border-radius:6px;cursor:pointer}
-.btn-danger{background:#dc3545}
-.thumb{width:80px;height:60px;object-fit:cover;border-radius:6px}
-a{text-decoration:none;color:#007bff}
-.back-btn{background:#6c757d}
-table{width:100%;border-collapse:collapse}
-th,td{padding:10px;border-bottom:1px solid #eee}
-</style>
+    <title>Restaurants - Admin</title>
+    <style>
+        body {
+            font-family: Poppins;
+            margin: 0;
+            background: #C7CFB7
+        }
+
+        .header {
+            background: #557174;
+            color: #1F2937;
+            font-weight: bold;
+            padding: 15px;
+            font-size: 20px
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px
+        }
+
+        .card {
+            background: #F7F7E8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+        }
+
+        .input {
+            width: 550px;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc
+        }
+
+        .btn {
+            padding: 10px 16px;
+            background: #557174;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .btn-danger {
+            background: #dc3545
+        }
+
+        .thumb {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px
+        }
+
+        a {
+            text-decoration: none;
+            color: #557174
+        }
+
+        .back-btn {
+            background: #557174
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="header">Admin - Manage Restaurants</div>
+    <div class="header">Manage Restaurants</div>
 
-<div class="container">
+    <div class="container">
 
-<a href="dashboard.php" class="btn back-btn">← Back to Dashboard</a>
-<br><br>
+        <a href="dashboard.php" class="btn back-btn">← Back to Dashboard</a>
+        <br><br>
 
-<?php if ($msg): ?>
-<div class="card" style="background:#e8f3ff;color:#007bff;"><?php echo $msg; ?></div>
-<?php endif; ?>
+        <?php if ($msg): ?>
+            <div class="card" style="background:#e8f3ff;color:#007bff;"><?php echo $msg; ?></div>
+        <?php endif; ?>
 
-<div class="card">
-<h3><?php echo isset($edit) ? "Edit Restaurant" : "Add Restaurant"; ?></h3>
+        <div class="card">
+            <h3><?php echo isset($edit) ? "Edit Restaurant" : "Add Restaurant"; ?></h3>
 
-<form method="post" enctype="multipart/form-data">
-<input type="text" name="name" class="input" required placeholder="Restaurant name"
-value="<?php echo $edit['name'] ?? ""; ?>">
+            <form method="post" enctype="multipart/form-data">
+                <input type="text" name="name" class="input" required placeholder="Restaurant name"
+                    value="<?php echo $edit['name'] ?? ""; ?>">
 
-<input type="text" name="address" class="input" required placeholder="Address"
-value="<?php echo $edit['address'] ?? ""; ?>">
+                <input type="text" name="address" class="input" required placeholder="Address"
+                    value="<?php echo $edit['address'] ?? ""; ?>">
 
-<input type="text" name="phone" class="input" placeholder="Phone number"
-value="<?php echo $edit['phone'] ?? ""; ?>">
+                <input type="text" name="phone" class="input" placeholder="Phone number"
+                    value="<?php echo $edit['phone'] ?? ""; ?>">
 
-<textarea name="description" class="input" placeholder="Description"><?php
-echo $edit['description'] ?? ""; ?></textarea>
+                <textarea name="description" class="input" placeholder="Description"><?php
+                echo $edit['description'] ?? ""; ?></textarea>
+                <br><br>
 
-<label>Restaurant Image (optional):</label>
-<input type="file" name="image" class="input">
+                <label>Restaurant Image (optional):</label>
+                <br>
+                <input type="file" name="image" class="input">
 
-<?php if ($edit && $edit['image']): ?>
-<img src="../assets/images/<?php echo $edit['image']; ?>" class="thumb">
-<?php endif; ?>
+                <?php if ($edit && $edit['image']): ?>
+                    <img src="../assets/images/<?php echo $edit['image']; ?>" class="thumb">
+                <?php endif; ?>
 
-<input type="hidden" name="id" value="<?php echo $edit['restaurant_id'] ?? 0; ?>">
+                <input type="hidden" name="id" value="<?php echo $edit['restaurant_id'] ?? 0; ?>">
+                <br><br>
+                <button class="btn" name="save_restaurant">Save</button>
+                <?php if ($edit): ?><a href="restaurants.php" class="btn back-btn">Cancel</a><?php endif; ?>
+            </form>
+        </div>
 
-<button class="btn" name="save_restaurant">Save</button>
-<?php if ($edit): ?><a href="restaurants.php" class="btn back-btn">Cancel</a><?php endif; ?>
-</form>
-</div>
+        <div class="card">
+            <h3>All Restaurants</h3>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
 
-<div class="card">
-<h3>All Restaurants</h3>
-<table>
-<tr>
-<th>#</th>
-<th>Image</th>
-<th>Name</th>
-<th>Address</th>
-<th>Actions</th>
-</tr>
+                <?php $i = 1;
+                while ($r = $list->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $i++; ?></td>
+                        <td>
+                            <?php if ($r['image']): ?>
+                                <img src="../assets/images/<?php echo $r['image']; ?>" class="thumb">
+                            <?php endif; ?>
+                        </td>
+                        <td><?php echo $r['name']; ?></td>
+                        <td><?php echo $r['address']; ?></td>
+                        <td>
+                            <a href="restaurants.php?edit=<?php echo $r['restaurant_id']; ?>" class="btn">Edit</a>
 
-<?php $i=1; while ($r = $list->fetch_assoc()): ?>
-<tr>
-<td><?php echo $i++; ?></td>
-<td>
-<?php if ($r['image']): ?>
-<img src="../assets/images/<?php echo $r['image']; ?>" class="thumb">
-<?php endif; ?>
-</td>
-<td><?php echo $r['name']; ?></td>
-<td><?php echo $r['address']; ?></td>
-<td>
-<a href="restaurants.php?edit=<?php echo $r['restaurant_id']; ?>" class="btn">Edit</a>
+                            <form method="post" style="display:inline"
+                                onsubmit="return confirm('Delete this restaurant?');">
+                                <input type="hidden" name="delete_id" value="<?php echo $r['restaurant_id']; ?>">
+                                <button class="btn-danger btn">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </table>
+        </div>
 
-<form method="post" style="display:inline" onsubmit="return confirm('Delete this restaurant?');">
-<input type="hidden" name="delete_id" value="<?php echo $r['restaurant_id']; ?>">
-<button class="btn-danger btn">Delete</button>
-</form>
-</td>
-</tr>
-<?php endwhile; ?>
-</table>
-</div>
-
-</div>
+    </div>
 </body>
+
 </html>
